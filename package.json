@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "sotojn <jsoto@terascope.com>",
+  "license": "ISC",
+  "repository": "git@github.com:sotojn/joseph-test-repo.git"
 }
