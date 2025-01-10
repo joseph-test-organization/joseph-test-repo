@@ -1,11 +1,11 @@
 name: Publish Release NPM Packages With Yarn
 
 on:
-    pull_request:
-        branches:
-        - master
-        types:
-        - closed
+  pull_request:
+    branches:
+      - master
+    types:
+      - closed
 
 jobs:
   test-npm-publish-with-yarn:
