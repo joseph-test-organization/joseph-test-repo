@@ -3,7 +3,7 @@ name: Publish Release NPM Packages With Yarn
 on:
   pull_request:
     branches:
-      - master
+      - main
     types:
       - closed
 
