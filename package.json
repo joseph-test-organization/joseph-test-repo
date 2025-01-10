@@ -8,5 +8,6 @@
   },
   "author": "sotojn <jsoto@terascope.com>",
   "license": "ISC",
-  "repository": "git@github.com:sotojn/joseph-test-repo.git"
+  "repository": "git@github.com:sotojn/joseph-test-repo.git",
+  "packageManager": "yarn@4.6.0"
 }
