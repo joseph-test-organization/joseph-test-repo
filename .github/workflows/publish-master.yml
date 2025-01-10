@@ -1,8 +1,11 @@
-name: Publish Release Teraslice NPM Packages and Docker Image
+name: Publish Release NPM Packages With Yarn
 
 on:
-  release:
-    types: [published]
+    pull_request:
+        branches:
+        - master
+        types:
+        - closed
 
 jobs:
   test-npm-publish-with-yarn:
