@@ -2,13 +2,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 
 const app = express();
-const port = 3000;
+const port = 5656;
 
 // Middleware for parsing JSON
 app.use(bodyParser.json());
 
 // In-memory variable to store chat messages
-let chatMessages = "\n";
+let chatMessages = "";
 
 // Root endpoint with instructions
 app.get("/", (req, res) => {

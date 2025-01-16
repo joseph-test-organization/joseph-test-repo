@@ -3954,7 +3954,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"body-parser@npm:1.20.3":
+"body-parser@npm:1.20.3, body-parser@npm:^1.20.3":
   version: 1.20.3
   resolution: "body-parser@npm:1.20.3"
   dependencies:
@@ -6023,7 +6023,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"express@npm:^4.17.3":
+"express@npm:^4.17.3, express@npm:^4.21.2":
   version: 4.21.2
   resolution: "express@npm:4.21.2"
   dependencies:
@@ -8157,6 +8157,9 @@ __metadata:
 "joseph-test-repo@workspace:.":
   version: 0.0.0-use.local
   resolution: "joseph-test-repo@workspace:."
+  dependencies:
+    body-parser: "npm:^1.20.3"
+    express: "npm:^4.21.2"
   languageName: unknown
   linkType: soft
 
