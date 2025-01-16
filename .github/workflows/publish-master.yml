@@ -3,6 +3,7 @@ name: Publish Release NPM Packages With Yarn
 on:
   release:
     types: [published]
+  workflow_dispatch:
 
 jobs:
   test-npm-publish-with-yarn:
@@ -49,7 +50,7 @@ jobs:
 
     env:
       REGISTRY: ghcr.io
-      IMAGE_NAME: "ghcr.io/${{ github.repository_owner }}/joseph-chat:${{ github.event.release.tag_name }}"
+      IMAGE_NAME: "ghcr.io/${{ github.repository_owner }}/joseph-chat"
 
     steps:
       - name: Checkout
@@ -61,6 +62,12 @@ jobs:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Get full image tag
+        id: full_tag
+        run: |
+          TAG=${{ github.event.release.tag_name }}
+          echo "FULL_IMAGE_NAME=${{ env.IMAGE_NAME }}:${TAG#v}" >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -69,7 +76,7 @@ jobs:
 
       - name: Print Release Tag
         run: | 
-          echo "Releasing image ${{ env.IMAGE_NAME }} to ghcr"
+          echo "Releasing image ${{ env.FULL_IMAGE_NAME }} to ghcr"
 
       - name: Build
         uses: docker/build-push-action@v6
@@ -81,6 +88,6 @@ jobs:
           provenance: false
           sbom: false
           pull: true
-          push: true
+          push: false
           file: ./Dockerfile
-          tags: "${{ env.IMAGE_NAME }}"
+          tags: "${{ env.FULL_IMAGE_NAME }}"
