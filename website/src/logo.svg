@@ -1,0 +1,44 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 200 200"
+  width="200"
+  height="200"
+>
+  <!-- Banana Shape -->
+  <g transform-origin="100 100" id="banana">
+    <path
+      d="M100,30 C115,5 160,50 145,100 C130,150 90,150 75,100 C60,50 85,5 100,30 Z"
+      fill="#FFE135"
+      stroke="#E0A106"
+      stroke-width="3"
+    />
+    <!-- Cute Face -->
+    <!-- Left Eye -->
+    <circle cx="95" cy="65" r="1.5" fill="black" />
+    <!-- Right Eye -->
+    <circle cx="105" cy="65" r="1.5" fill="black" />
+    <!-- Smile -->
+    <path
+      d="M95,70 Q100,75 105,70"
+      stroke="black"
+      stroke-width="0.8"
+      fill="none"
+      stroke-linecap="round"
+    />
+  </g>
+  <!-- Animation -->
+  <style>
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      100% {
+        transform: rotate(360deg);
+      }
+    }
+
+    #banana {
+      animation: spin 2s linear infinite;
+    }
+  </style>
+</svg>

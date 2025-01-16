@@ -3,7 +3,11 @@
   "version": "1.0.0",
   "description": "A test repo for Joseph to do stuff ",
   "main": "test.js",
+  "workspaces": [
+    "website"
+  ],
   "scripts": {
+    "start": "node test.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "sotojn <jsoto@terascope.com>",
