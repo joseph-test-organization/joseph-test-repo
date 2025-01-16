@@ -1,5 +1,6 @@
 {
   "name": "joseph-test-repo",
+  "homepage": "https://sotojn.github.io/joseph-test-repo/",
   "version": "1.0.0",
   "description": "A test repo for Joseph to do stuff ",
   "main": "test.js",
