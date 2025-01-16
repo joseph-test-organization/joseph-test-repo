@@ -3,7 +3,6 @@ name: Publish Release NPM Packages With Yarn
 on:
   release:
     types: [published]
-  workflow_dispatch:
 
 jobs:
   test-npm-publish-with-yarn:
@@ -88,6 +87,6 @@ jobs:
           provenance: false
           sbom: false
           pull: true
-          push: false
+          push: true
           file: ./Dockerfile
           tags: "${{ env.FULL_IMAGE_NAME }}"
