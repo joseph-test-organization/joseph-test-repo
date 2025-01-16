@@ -16,7 +16,10 @@ RUN yarn install
 
 RUN ls ./node_modules
 
-EXPOSE 3000
+EXPOSE 5656
 
 # Command to run the application
 CMD ["yarn", "start"]
+
+# Use for debugging
+# ENTRYPOINT ["sleep", "infinity"]
