@@ -55,6 +55,9 @@ jobs:
         run: |
           curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
+      - name: Authenticate to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $GITHUB_ACTOR --password-stdin
+        
       - name: Extract Helm Chart Version
         id: extract-version
         run: |
@@ -109,7 +112,9 @@ jobs:
           cd ./helm/joseph-chat
           echo $(ls)
           CHART_FILE=$(ls joseph-chat-chart-${{ env.CHART_VERSION }}.tgz)
-          helm push oci://ghcr.io/sotojn/joseph-chat-chart $CHART_FILE
+          echo "Publishing $CHART_FILE to GHCR..."
+          helm push $CHART_FILE oci://ghcr.io/sotojn/joseph-chat-chart
+  
 
   build-website:
     needs: build-and-publish-helm-charts
