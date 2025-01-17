@@ -1,0 +1,25 @@
+# environments:
+#   default:
+#     values:
+#       - default-values.yaml
+---
+
+# repositories:
+#   - name: joseph-chat
+#     url: https://sotojn.github.io/joseph-test-repo/charts
+
+helmDefaults:
+  wait: true
+
+releases:
+
+  - name: joseph-chat
+    namespace: dev
+    version: 1.0.0
+    chart: ../../helm/joseph-chat
+    values:
+      - image:
+          tag: "1.0.0"
+        service:
+          type: NodePort
+          nodePort: 30565

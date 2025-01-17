@@ -1,0 +1,10 @@
+replicaCount: 1
+image:
+  repository: ghcr.io/sotojn/joseph-chat
+  tag: "latest"
+  pullPolicy: IfNotPresent
+service:
+  type: ClusterIP
+  port: 5656
+  nodePort: null
+env: {}
