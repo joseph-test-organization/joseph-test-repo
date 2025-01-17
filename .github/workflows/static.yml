@@ -90,6 +90,8 @@ jobs:
         run: |
           cd ./helm/joseph-chat
           helm repo index . --url oci://ghcr.io/sotojn/joseph-chat-chart:${{ env.CHART_VERSION }}
+          echo $(cat index.yaml)
+          echo $(ls)
           sed -i '' 's|/joseph-chat-chart-${{ env.CHART_VERSION }}.tgz||' index.yaml
           echo $(cat index.yaml)
 
