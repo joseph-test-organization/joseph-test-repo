@@ -106,7 +106,9 @@ jobs:
       - name: Publish Helm Chart to GHCR
         if: env.version_exists == 'false'
         run: |
-          CHART_FILE=$(ls joseph-chat-chart-*.tgz)
+          cd ./helm/joseph-chat
+          echo $(ls)
+          CHART_FILE=$(ls joseph-chat-chart-${{ env.CHART_VERSION }}.tgz)
           helm push oci://ghcr.io/sotojn/joseph-chat-chart $CHART_FILE
 
   build-website:
