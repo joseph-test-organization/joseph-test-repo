@@ -115,7 +115,7 @@ jobs:
           echo $(ls)
           CHART_FILE=$(ls joseph-chat-chart-${{ env.CHART_VERSION }}.tgz)
           echo "Publishing $CHART_FILE to GHCR..."
-          helm push $CHART_FILE oci://ghcr.io/sotojn/joseph-chat-chart
+          helm push $CHART_FILE oci://ghcr.io/sotojn
   
 
   build-website:
