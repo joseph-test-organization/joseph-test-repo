@@ -86,12 +86,15 @@ jobs:
           helm repo index . --url oci://ghcr.io/sotojn/joseph-chat-chart:${{ env.CHART_VERSION }}
           echo $(cat index.yaml)
           echo $(ls)
-          sed -i '' 's|/joseph-chat-chart-${{ env.CHART_VERSION }}.tgz||' index.yaml
+          sed -i 's|/joseph-chat-chart-${{ env.CHART_VERSION }}.tgz||' index.yaml
           echo $(cat index.yaml)
 
       - name: Commit Updated index.yaml
         if: env.version_exists == 'false'
         run: |
+          echo $(ls)
+          echo $(find ./helm/joseph-chat/index.yaml)
+          echo $(cat ./helm/joseph-chat/index.yaml)
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add ./helm/joseph-chat/index.yaml
