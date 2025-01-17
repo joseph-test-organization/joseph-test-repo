@@ -1,0 +1,13 @@
+apiVersion: v1
+entries:
+  joseph-chat-chart:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2025-01-17T22:13:39.148523842Z"
+    description: A Helm chart for the chat app
+    digest: 7bae7883db3a103f469641c4e205890e21503af8e967048d190f42543d027be9
+    name: joseph-chat-chart
+    urls:
+    - oci://ghcr.io/sotojn/joseph-chat-chart:1.0.0
+    version: 1.0.0
+generated: "2025-01-17T22:13:39.148229023Z"
