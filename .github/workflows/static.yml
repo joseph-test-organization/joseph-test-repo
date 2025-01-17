@@ -43,7 +43,72 @@ jobs:
   #     - name: Deploy to GitHub Pages
   #       id: deployment
   #       uses: actions/deploy-pages@v4
+  build-and-publish-helm-charts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set Up Helm
+        run: |
+          curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
+
+      - name: Extract Helm Chart Version
+        id: extract-version
+        run: |
+          CHART_VERSION=$(yq eval '.version' ./helm/joseph-chat/Chart.yaml)
+          echo "CHART_VERSION=$CHART_VERSION" >> $GITHUB_ENV
+        env:
+          CHART_VERSION: ""
+
+      - name: Check if Helm Chart Version Exists in GHCR
+        id: check-version
+        env:
+          CHART_VERSION: ${{ env.CHART_VERSION }}
+        run: |
+          if curl -fsSL -u "${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}" \
+            "https://ghcr.io/v2/sotojn/joseph-chat/tags/list" | \
+            jq -r '.tags[]' | grep -qx "$CHART_VERSION"; then
+            echo "Helm chart version $CHART_VERSION already exists in GHCR."
+            echo "version_exists=true" >> $GITHUB_ENV
+          else
+            echo "Helm chart version $CHART_VERSION does not exist in GHCR."
+            echo "version_exists=false" >> $GITHUB_ENV
+          fi
+  
+
+      - name: Package Helm Chart
+        if: env.version_exists == 'false'
+        run: |
+          cd ./helm/joseph-chat
+          echo $(helm package ./)
+          echo "Packaged Helm chart."
+          echo $(ls)
+
+      - name: Update index.yaml
+        if: env.version_exists == 'false'
+        run: |
+          helm repo index . --url oci://ghcr.io/sotojn/joseph-chat-chart:${{ env.CHART_VERSION }}
+          sed -i '' 's|/joseph-chat-chart-${{ env.CHART_VERSION }}.tgz||' index.yaml
+          echo $(cat index.yaml)
+
+      - name: Commit Updated index.yaml
+        if: env.version_exists == 'false'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add index.yaml
+          git commit -m "Update Helm chart index.yaml for version $CHART_VERSION"
+          git push origin main
+
+      - name: Publish Helm Chart to GHCR
+        if: env.version_exists == 'false'
+        run: |
+          CHART_FILE=$(ls joseph-chat-chart-*.tgz)
+          helm push oci://ghcr.io/sotojn/joseph-chat-chart $CHART_FILE
+
   build-website:
+    needs: build-and-publish-helm-charts
     runs-on: ubuntu-latest
     # needs: build-release
     steps:
@@ -61,6 +126,10 @@ jobs:
         run: yarn && yarn workspace @joseph-test-repo/website build
       - name: Check Output
         run: find ./website/build
+      - name: Prepare index.yaml for Website Build
+        run: |
+          mkdir -p ./website/build/charts/
+          cp index.yaml ./website/build/charts/index.yaml
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
