@@ -75,20 +75,14 @@ jobs:
             echo "Helm chart version $CHART_VERSION does not exist in GHCR."
             echo "version_exists=false" >> $GITHUB_ENV
           fi
-  
 
-      - name: Package Helm Chart
+      - name: Package and Update index.yaml
         if: env.version_exists == 'false'
         run: |
           cd ./helm/joseph-chat
           echo $(helm package ./)
           echo "Packaged Helm chart."
           echo $(ls)
-
-      - name: Update index.yaml
-        if: env.version_exists == 'false'
-        run: |
-          cd ./helm/joseph-chat
           helm repo index . --url oci://ghcr.io/sotojn/joseph-chat-chart:${{ env.CHART_VERSION }}
           echo $(cat index.yaml)
           echo $(ls)
