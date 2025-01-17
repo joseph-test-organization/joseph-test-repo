@@ -88,7 +88,9 @@ jobs:
       - name: Update index.yaml
         if: env.version_exists == 'false'
         run: |
-          helm repo index . --url oci://ghcr.io/sotojn/joseph-chat-chart:${{ env.CHART_VERSION }}
+          echo $(ls)
+          echo $(helm repo index . --url oci://ghcr.io/sotojn/joseph-chat-chart:${{ env.CHART_VERSION }})
+          echo $(ls)
           sed -i '' 's|/joseph-chat-chart-${{ env.CHART_VERSION }}.tgz||' index.yaml
           echo $(cat index.yaml)
 
