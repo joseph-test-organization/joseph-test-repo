@@ -142,7 +142,7 @@ jobs:
       - name: Prepare index.yaml for Website Build
         run: |
           mkdir -p ./website/build/charts/
-          cp index.yaml ./website/build/charts/index.yaml
+          cp ./helm/joseph-chat/index.yaml ./website/build/charts/index.yaml
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
