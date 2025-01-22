@@ -152,7 +152,7 @@ jobs:
       - name: Prepare chart directory for Website Build
         run: |
           mkdir -p ./website/build/charts/
-          cp -r ./helm/web-repo ./website/build/charts/
+          cp -r ./helm/web-repo/* ./website/build/charts/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
