@@ -117,7 +117,7 @@
 
       <pre class="snippet" lang="no-highlight" style="padding: 0">
         <button class="btn" onclick="copyToClipboard(this)">
-          <img class="clippy" src="/charts/_images/clippy.svg" alt="Copy to clipboard" width="13">
+          <img class="clippy" src="/joseph-test-repo/charts/_images/clippy.svg" alt="Copy to clipboard" width="13">
         </button>
         <code id="helm-command">helm repo add sotojn https://sotojn.github.io/joseph-test-repo/charts</code>
       </pre>
@@ -141,7 +141,7 @@
       <p>Run the command above to add the repo to the helm cli client. This will contain all the charts listed under the <a href="#chart-1">Charts section</a> below. This can be validated by running the helm search command below:</p>
       <pre class="snippet" lang="no-highlight" style="padding: 0">
         <button class="btn" onclick="copyToClipboard(this)">
-          <img class="clippy" src="/charts/_images/clippy.svg" alt="Copy to clipboard" width="13">
+          <img class="clippy" src="/joseph-test-repo/charts/_images/clippy.svg" alt="Copy to clipboard" width="13">
         </button>
         <code id="helm-search-command">helm search repo sotojn --versions</code>
       </pre>
@@ -157,7 +157,7 @@
       <p>Create a helmfile.yaml and paste this in it and save.</p>
       <pre class="snippet" lang="yaml" style="padding: 0">
         <button class="btn" onclick="copyToClipboard(this)">
-          <img class="clippy" src="/charts/_images/clippy.svg" alt="Copy to clipboard" width="13">
+          <img class="clippy" src="/joseph-test-repo/charts/_images/clippy.svg" alt="Copy to clipboard" width="13">
         </button>
         <code id="helm-search-command" class="yaml">
   repositories:

@@ -82,10 +82,10 @@ jobs:
               jq -r --arg version "$CHART_VERSION" '.[] | select(.metadata.container.tags[] == $version)' | \
               grep -q "$CHART_VERSION"; then
               echo "Helm chart version $CHART_VERSION already exists in GHCR."
-              echo "version_exists=true"
+              echo "version_exists=true" >> $GITHUB_ENV
             else
               echo "Helm chart version $CHART_VERSION does not exist in GHCR."
-              echo "version_exists=false"
+              echo "version_exists=false" >> $GITHUB_ENV
             fi
 
       - name: Package and Update index.yaml
