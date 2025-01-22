@@ -191,14 +191,14 @@
           <div class="chart">
             <a href="{{ (index (index $chartEntry 0).Urls 0) }}" title="{{ (index (index $chartEntry 0).Urls 0) }}">
               <div class="icon">
-                <img class="chart-item-logo" alt="{{ $key }}'s logo" src="/charts/_images/{{ (index $chartEntry 0).Name }}.png">
+                <img class="chart-item-logo" alt="{{ $key }}'s logo" src="/joseph-test-repo/charts/_images/{{ (index $chartEntry 0).Name }}.png">
               </div>
               <div class="body">
                 <p class="info">
                   {{ (index $chartEntry 0).Name }}
                   ({{ (index $chartEntry 0).Version }}@{{ (index $chartEntry 0).AppVersion }})
                   <a href="https://github.com/sotojn/joseph-test-repo/pkgs/container/{{ $key }}">
-                    <img src="/charts/_images/GitHub-Mark-32px.png" alt="github link" style="height: 16px; width: 16px; vertical-align: middle;" />
+                    <img src="/joseph-test-repo/charts/_images/GitHub-Mark-32px.png" alt="github link" style="height: 16px; width: 16px; vertical-align: middle;" />
                   </a>
                 </p>
                 <p class="description">
