@@ -4,3 +4,7 @@
 # Dependency directory
 # https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
+
+# generated helm resources
+helm/web-repo/index.html
+helm/web-repo/*.tgz

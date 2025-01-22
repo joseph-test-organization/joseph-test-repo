@@ -4,9 +4,9 @@
 #       - default-values.yaml
 ---
 
-# repositories:
-#   - name: joseph-chat
-#     url: https://sotojn.github.io/joseph-test-repo/charts
+repositories:
+  - name: joseph-chat
+    url: https://sotojn.github.io/joseph-test-repo/charts
 
 helmDefaults:
   wait: true
@@ -16,7 +16,7 @@ releases:
   - name: joseph-chat
     namespace: dev
     version: 1.0.0
-    chart: ../../helm/joseph-chat
+    chart: joseph-chat/joseph-chat-chart
     values:
       - image:
           tag: "1.0.0"
