@@ -75,24 +75,27 @@ jobs:
         env:
           CHART_VERSION: ${{ env.CHART_VERSION }}
         run: |
-          if curl -fsSL -u "${GITHUB_ACTOR}:${{ secrets.GITHUB_TOKEN }}" \
-            "https://ghcr.io/v2/sotojn/joseph-chat/tags/list" | \
-            jq -r '.tags[]' | grep -qx "$CHART_VERSION"; then
-            echo "Helm chart version $CHART_VERSION already exists in GHCR."
-            echo "version_exists=true" >> $GITHUB_ENV
-          else
-            echo "Helm chart version $CHART_VERSION does not exist in GHCR."
-            echo "version_exists=false" >> $GITHUB_ENV
-          fi
+          if curl -L -H "Accept: application/vnd.github+json" \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          -H "X-GitHub-Api-Version: 2022-11-28" \
+          "https://api.github.com/users/sotojn/packages/container/joseph-chat-chart/versions" | \
+              jq -r --arg version "$CHART_VERSION" '.[] | select(.metadata.container.tags[] == $version)' | \
+              grep -q "$CHART_VERSION"; then
+              echo "Helm chart version $CHART_VERSION already exists in GHCR."
+              echo "version_exists=true"
+            else
+              echo "Helm chart version $CHART_VERSION does not exist in GHCR."
+              echo "version_exists=false"
+            fi
 
       - name: Package and Update index.yaml
         if: env.version_exists == 'false'
         run: |
-          cd ./helm/joseph-chat
-          echo $(helm package ./)
+          cd ./helm/web-repo
+          echo $(helm package ../joseph-chat)
           echo "Packaged Helm chart."
           echo $(ls)
-          helm repo index . --url oci://ghcr.io/sotojn/joseph-chat-chart:${{ env.CHART_VERSION }}
+          helm repo index . --merge=index.yaml --url oci://ghcr.io/sotojn/joseph-chat-chart:${{ env.CHART_VERSION }}
           echo $(cat index.yaml)
           echo $(ls)
           sed -i 's|/joseph-chat-chart-${{ env.CHART_VERSION }}.tgz||' index.yaml
@@ -102,18 +105,18 @@ jobs:
         if: env.version_exists == 'false'
         run: |
           echo $(ls)
-          echo $(find ./helm/joseph-chat/index.yaml)
-          echo $(cat ./helm/joseph-chat/index.yaml)
+          echo $(find ./helm/web-repo/index.yaml)
+          echo $(cat ./helm/web-repo/index.yaml)
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add ./helm/joseph-chat/index.yaml
+          git add ./helm/web-repo/index.yaml
           git commit -m "Update Helm chart index.yaml for version $CHART_VERSION"
           git push origin main
 
       - name: Publish Helm Chart to GHCR
         if: env.version_exists == 'false'
         run: |
-          cd ./helm/joseph-chat
+          cd ./helm/web-repo
           echo $(ls)
           CHART_FILE=$(ls joseph-chat-chart-${{ env.CHART_VERSION }}.tgz)
           echo "Publishing $CHART_FILE to GHCR..."
@@ -135,14 +138,21 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           cache: 'yarn'
 
+
+
       - name: Build webiste
         run: yarn && yarn workspace @joseph-test-repo/website build
       - name: Check Output
         run: find ./website/build
-      - name: Prepare index.yaml for Website Build
+      - name: Run repo-html
+        run: |
+          cd ./helm/web-repo
+          helm plugin install https://github.com/halkeye/helm-repo-html
+          helm repo-html
+      - name: Prepare chart directory for Website Build
         run: |
           mkdir -p ./website/build/charts/
-          cp ./helm/joseph-chat/index.yaml ./website/build/charts/index.yaml
+          cp -r ./helm/web-repo ./website/build/charts/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
