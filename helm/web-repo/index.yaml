@@ -3,9 +3,9 @@ entries:
   joseph-chat-chart:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2025-01-23T22:43:20.420127558Z"
+    created: "2025-01-23T22:43:43.475894585Z"
     description: A Helm chart for the chat app
-    digest: e36ed35e52af7a6b672e7aa65883d77de0c3ea8cc435b6f6df0c3a8ee887ff65
+    digest: 33d693243640e2814baf017fb2df91361f9a30b4344c782c30da8c041232cbcf
     name: joseph-chat-chart
     urls:
     - oci://ghcr.io/joseph-test-organization/joseph-chat-chart:1.0.3
@@ -37,4 +37,4 @@ entries:
     urls:
     - oci://ghcr.io/joseph-test-organization/joseph-chat-chart:1.0.0
     version: 1.0.0
-generated: "2025-01-23T22:43:20.419563274Z"
+generated: "2025-01-23T22:43:43.475642327Z"
