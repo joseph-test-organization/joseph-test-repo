@@ -108,6 +108,9 @@ jobs:
         if: env.version_exists == 'false'
         run: |
           echo $(ls)
+          curl -I -H "Authorization: Bearer ${{ steps.token-generation.outputs.token }}" \
+          https://api.github.com/repos/sotojn/joseph-test-repo
+          git remote -v
           echo $(find ./helm/web-repo/index.yaml)
           echo $(cat ./helm/web-repo/index.yaml)
           git config user.name "github-actions[bot]"
