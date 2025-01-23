@@ -6,7 +6,7 @@
 
 repositories:
   - name: joseph-chat
-    url: https://sotojn.github.io/joseph-test-repo/charts
+    url: https://joseph-test-organization.github.io/joseph-test-repo/charts
 
 helmDefaults:
   wait: true

@@ -1,6 +1,6 @@
 replicaCount: 1
 image:
-  repository: ghcr.io/sotojn/joseph-chat
+  repository: ghcr.io/joseph-test-organization/joseph-chat
   tag: "latest"
   pullPolicy: IfNotPresent
 service:

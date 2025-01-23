@@ -1,6 +1,6 @@
 {
   "name": "@joseph-test-repo/website",
-  "homepage": "https://sotojn.github.io/joseph-test-repo/",
+  "homepage": "https://joseph-test-organization.github.io/joseph-test-repo/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
