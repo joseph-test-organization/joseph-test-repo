@@ -45,10 +45,17 @@ jobs:
   build-and-publish-helm-charts:
     runs-on: ubuntu-latest
     steps:
+      - name: Generate a token
+        id: token-generation
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ vars.GH_APP_ID }}
+          private-key: ${{ secrets.GH_APP_KEY }}
+
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.token-generation.outputs.token }}
 
       - name: Set Up Helm
         run: |
@@ -56,8 +63,7 @@ jobs:
 
       - name: Authenticate Helm to GHCR
         run: |
-          echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io --username $GITHUB_ACTOR --password-stdin
-        
+          echo "${{ steps.token-generation.outputs.token }}" | helm registry login ghcr.io --username ${{ vars.GH_APP_ID }} --password-stdin
         
       - name: Extract Helm Chart Version
         id: extract-version
