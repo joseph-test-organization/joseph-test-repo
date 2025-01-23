@@ -81,7 +81,7 @@ jobs:
           if curl -L -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
-          "https://api.github.com/users/sotojn/packages/container/joseph-chat-chart/versions" | \
+          "https://api.github.com/users/joseph-test-organization/packages/container/joseph-chat-chart/versions" | \
               jq -r --arg version "$CHART_VERSION" '.[] | select(.metadata.container.tags[] == $version)' | \
               grep -q "$CHART_VERSION"; then
               echo "Helm chart version $CHART_VERSION already exists in GHCR."
@@ -98,7 +98,7 @@ jobs:
           echo $(helm package ../joseph-chat)
           echo "Packaged Helm chart."
           echo $(ls)
-          helm repo index . --merge=index.yaml --url oci://ghcr.io/sotojn/joseph-chat-chart:${{ env.CHART_VERSION }}
+          helm repo index . --merge=index.yaml --url oci://ghcr.io/joseph-test-organization/joseph-chat-chart:${{ env.CHART_VERSION }}
           echo $(cat index.yaml)
           echo $(ls)
           sed -i 's|/joseph-chat-chart-${{ env.CHART_VERSION }}.tgz||' index.yaml
@@ -109,7 +109,7 @@ jobs:
         run: |
           echo $(ls)
           curl -I -H "Authorization: Bearer ${{ steps.token-generation.outputs.token }}" \
-          https://api.github.com/repos/sotojn/joseph-test-repo
+          https://api.github.com/repos/joseph-test-organization/joseph-test-repo
           echo "-----------"
           git remote -v
           echo $(find ./helm/web-repo/index.yaml)
@@ -118,7 +118,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add ./helm/web-repo/index.yaml
           git commit -m "Update Helm chart index.yaml for version $CHART_VERSION"
-          git push --force -v https://x-access-token:${{ steps.token-generation.outputs.token }}@github.com/sotojn/joseph-test-repo.git HEAD:main
+          git push --force -v https://x-access-token:${{ steps.token-generation.outputs.token }}@github.com/joseph-test-organization/joseph-test-repo.git HEAD:main
 
       - name: Publish Helm Chart to GHCR
         if: env.version_exists == 'false'
@@ -127,7 +127,7 @@ jobs:
           echo $(ls)
           CHART_FILE=$(ls joseph-chat-chart-${{ env.CHART_VERSION }}.tgz)
           echo "Publishing $CHART_FILE to GHCR..."
-          helm push $CHART_FILE oci://ghcr.io/sotojn --debug
+          helm push $CHART_FILE oci://ghcr.io/joseph-test-organization --debug
   
 
   build-website:

@@ -119,7 +119,7 @@
         <button class="btn" onclick="copyToClipboard(this)">
           <img class="clippy" src="/joseph-test-repo/charts/_images/clippy.svg" alt="Copy to clipboard" width="13">
         </button>
-        <code id="helm-command">helm repo add sotojn https://sotojn.github.io/joseph-test-repo/charts</code>
+        <code id="helm-command">helm repo add sotojn https://joseph-test-organization.github.io/joseph-test-repo/charts</code>
       </pre>
 
       <script>
@@ -149,7 +149,7 @@
       <h2>Reference Links</h2>
       <p>
         <ul>
-          <li><a href="https://github.com/sotojn/joseph-test-repo">Joseph Test Repo on GitHub</a></li>
+          <li><a href="https://github.com/joseph-test-organization/joseph-test-repo">Joseph Test Repo on GitHub</a></li>
         </ul>
       </p>
 
@@ -162,7 +162,7 @@
         <code id="helm-search-command" class="yaml">
   repositories:
     - name: joseph-chat
-      url: https://sotojn.github.io/joseph-test-repo/charts
+      url: https://joseph-test-organization.github.io/joseph-test-repo/charts
 
   helmDefaults:
     wait: true
@@ -197,7 +197,7 @@
                 <p class="info">
                   {{ (index $chartEntry 0).Name }}
                   ({{ (index $chartEntry 0).Version }}@{{ (index $chartEntry 0).AppVersion }})
-                  <a href="https://github.com/sotojn/joseph-test-repo/pkgs/container/{{ $key }}">
+                  <a href="https://github.com/joseph-test-organization/joseph-test-repo/pkgs/container/{{ $key }}">
                     <img src="/joseph-test-repo/charts/_images/GitHub-Mark-32px.png" alt="github link" style="height: 16px; width: 16px; vertical-align: middle;" />
                   </a>
                 </p>

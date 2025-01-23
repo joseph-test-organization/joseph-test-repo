@@ -1,6 +1,6 @@
 {
   "name": "joseph-test-repo",
-  "homepage": "https://sotojn.github.io/joseph-test-repo/",
+  "homepage": "https://joseph-test-organization.github.io/joseph-test-repo/",
   "version": "1.0.0",
   "description": "A test repo for Joseph to do stuff ",
   "main": "test.js",
@@ -13,7 +13,7 @@
   },
   "author": "sotojn <jsoto@terascope.com>",
   "license": "ISC",
-  "repository": "git@github.com:sotojn/joseph-test-repo.git",
+  "repository": "git@github.com:joseph-test-organization/joseph-test-repo.git",
   "packageManager": "yarn@4.6.0",
   "dependencies": {
     "body-parser": "^1.20.3",
