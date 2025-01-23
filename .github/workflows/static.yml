@@ -110,6 +110,7 @@ jobs:
           echo $(ls)
           curl -I -H "Authorization: Bearer ${{ steps.token-generation.outputs.token }}" \
           https://api.github.com/repos/sotojn/joseph-test-repo
+          echo "-----------"
           git remote -v
           echo $(find ./helm/web-repo/index.yaml)
           echo $(cat ./helm/web-repo/index.yaml)
@@ -117,7 +118,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add ./helm/web-repo/index.yaml
           git commit -m "Update Helm chart index.yaml for version $CHART_VERSION"
-          git push --force https://x-access-token:${{ steps.token-generation.outputs.token }}@github.com/sotojn/joseph-test-repo.git HEAD:main
+          git push --force -v https://x-access-token:${{ steps.token-generation.outputs.token }}@github.com/sotojn/joseph-test-repo.git HEAD:main
 
       - name: Publish Helm Chart to GHCR
         if: env.version_exists == 'false'
