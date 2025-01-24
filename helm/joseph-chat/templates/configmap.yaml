@@ -7,5 +7,5 @@ metadata:
 data:
   config.json: |
     {
-      "exampleKey1.0.7": "exampleValue1.0.7"
+      "exampleKey1.0.6": "exampleValue1.0.6"
     }
