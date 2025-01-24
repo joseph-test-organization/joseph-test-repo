@@ -65,7 +65,7 @@ jobs:
 
       - name: Authenticate Helm to GHCR
         run: |
-          echo "${{ steps.token-generation.outputs.token }}" | helm registry login ghcr.io --username ${{ vars.GH_APP_ID }} --password-stdin
+          echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io --username ${{ vars.GH_APP_ID }} --password-stdin
         
       - name: Extract Helm Chart Version
         id: extract-version
