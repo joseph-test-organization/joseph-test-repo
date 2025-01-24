@@ -5,6 +5,8 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
+    paths-ignore:
+      - 'helm/web-repo/index.yaml'
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -118,7 +120,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add ./helm/web-repo/index.yaml
           git commit -m "Update Helm chart index.yaml for version $CHART_VERSION"
-          git push --force -v https://x-access-token:${{ steps.token-generation.outputs.token }}@github.com/joseph-test-organization/joseph-test-repo.git HEAD:main
+          git push -v https://x-access-token:${{ steps.token-generation.outputs.token }}@github.com/joseph-test-organization/joseph-test-repo.git HEAD:main
 
       - name: Publish Helm Chart to GHCR
         if: env.version_exists == 'false'
