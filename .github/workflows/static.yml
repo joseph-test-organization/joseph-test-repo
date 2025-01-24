@@ -136,7 +136,7 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          ref: main
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -155,8 +155,6 @@ jobs:
           helm repo-html
       - name: cat index.yaml
         run: |
-          echo $(pwd)
-          ls $(ls)
           echo $(cat ./helm/web-repo/index.yaml)
       - name: Prepare chart directory for Website Build
         run: |
