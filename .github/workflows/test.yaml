@@ -48,6 +48,7 @@ jobs:
                 echo "Releasing image ${{ env.FULL_IMAGE_NAME }} to ghcr"
 
             - name: Build
+              id: test-1
               uses: docker/build-push-action@v6
               with:
                 context: .
@@ -57,7 +58,11 @@ jobs:
                 provenance: false
                 sbom: false
                 pull: true
-                push: true
+                push: false
                 file: ./Dockerfile
                 tags: "${{ env.FULL_IMAGE_NAME }}"
-                outputs: type=oci
+            - name: Look at outputs
+              run: |
+                echo ${{ steps.test-1.outputs.metadata }}
+        
+            
