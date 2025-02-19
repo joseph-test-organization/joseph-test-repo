@@ -90,3 +90,31 @@ jobs:
           push: true
           file: ./Dockerfile
           tags: "${{ env.FULL_IMAGE_NAME }}"
+      - 
+        name: Pull Image
+        run: docker pull "${{ env.FULL_IMAGE_NAME }}"
+      - 
+        name: Extract Labels from Image
+        id: extract-labels
+        run: |
+          LABELS=$(docker inspect "${{ env.FULL_IMAGE_NAME }}" | jq -r '.[0].Config.Labels | to_entries | map("\(.key)=\(.value)") | join("\n")')
+          echo "$LABELS"
+          echo "$LABELS" >> labels.txt
+          
+          # Store in step output
+          {
+            echo "labels<<EOF"
+            echo "$LABELS"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+      - 
+        name: Push Labels as Manifest Annotations
+        run: |
+          # Create annotation arguments for buildx imagetools create
+          LABEL_ARGS=$(echo "${{ steps.extract-labels.outputs.labels }}" | grep -v "org.opencontainers.image.licenses=" | awk -F= '{print "--annotation "$1"=\"" $2 "\"" }')
+          
+          # Recreate the manifest list with annotations
+          docker buildx imagetools create \
+            $LABEL_ARGS \
+            -t "${{ env.FULL_IMAGE_NAME }}" \
+            "${{ env.FULL_IMAGE_NAME }}"
