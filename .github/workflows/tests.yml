@@ -1,0 +1,21 @@
+name: Teraslice CI Tests
+# this will technically run again on merge to master, should limit it
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  verify-build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22
+        cache: 'yarn'
+
+    - name: Install and build packages
+      run: YARN_ENABLE_HARDENED_MODE=1 yarn install
