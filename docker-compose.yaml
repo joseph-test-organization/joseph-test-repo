@@ -1,0 +1,28 @@
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    restart: unless-stopped
+    platform: linux/arm64  # for Apple M1/M2 Macs
+    environment:
+      - OLLAMA_ORIGINS="*"
+
+  lobe-chat:
+    image: lobehub/lobe-chat
+    container_name: lobe-chat
+    ports:
+      - "3210:3210"
+    environment:
+      - OPENAI_API_KEY=dummy
+      - OPENAI_API_BASE_URL=http://ollama:11434/v1
+    depends_on:
+      - ollama
+    restart: unless-stopped
+    platform: linux/arm64
+
+volumes:
+  ollama-data:

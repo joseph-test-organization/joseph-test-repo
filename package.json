@@ -3,13 +3,17 @@
   "homepage": "https://joseph-test-organization.github.io/joseph-test-repo/",
   "version": "1.0.1",
   "description": "A test repo for Joseph to do stuff ",
+  "type": "module",
   "main": "test.js",
   "workspaces": [
     "website"
   ],
   "scripts": {
     "start": "node test.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:unit": "jest --testPathPatterns logic",
+    "test:unit2": "jest --testPathPatterns math",
+    "determine-tests": "node ./scripts/determine-tests.js"
   },
   "author": "sotojn <jsoto@terascope.com>",
   "license": "ISC",
@@ -18,5 +22,8 @@
   "dependencies": {
     "body-parser": "^1.20.3",
     "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "jest": "^30.0.4"
   }
 }

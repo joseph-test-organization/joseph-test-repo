@@ -10,7 +10,6 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v4
-
     - name: Setup Node
       uses: actions/setup-node@v4
       with:
@@ -19,3 +18,116 @@ jobs:
 
     - name: Install and build packages
       run: YARN_ENABLE_HARDENED_MODE=1 yarn install
+
+  determine-tests-based-off-commit:
+    runs-on: ubuntu-latest
+    needs: verify-build
+    outputs:
+      unit: ${{ steps.determine.outputs.unit }}
+      unit2: ${{ steps.determine.outputs.unit2 }}
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+      - name: Setup Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'yarn'
+      - name: Install packages
+        run: yarn install
+      - name: Determine tests to run
+        id: determine
+        # The output of determine-tests would be a json object that looks like this:
+          # {
+          #   "unit": true,
+          #   "e2e": true,
+          #   "website": false
+          # }
+        run: |
+          echo "Running determine-tests..."
+
+          JSON=$(yarn determine-tests)
+          echo "$JSON"
+
+          UNIT=$(echo "$JSON" | jq -r '.unit')
+          UNIT2=$(echo "$JSON" | jq -r '.unit2')
+
+          echo "unit=$UNIT" >> $GITHUB_OUTPUT
+          echo "unit2=$UNIT2" >> $GITHUB_OUTPUT
+
+  linux-unit-tests:
+    if: needs.determine-tests-based-off-commit.outputs.unit == 'true'
+    runs-on: ubuntu-latest
+    needs: determine-tests-based-off-commit
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Setup Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'yarn'
+
+      - name: Install packages
+        run: yarn install
+
+      - name: Test
+        run: yarn test:unit
+
+  linux-unit2-tests:
+    if: needs.determine-tests-based-off-commit.outputs.unit2 == 'true'
+    runs-on: ubuntu-latest
+    needs: determine-tests-based-off-commit
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Setup Node 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'yarn'
+
+      - name: Install packages
+        run: yarn install
+
+      - name: Test
+        run: yarn test:unit2
+
+  all-tests-passed:
+    needs:
+      [
+        linux-unit-tests,
+        linux-unit2-tests,
+        determine-tests-based-off-commit
+      ]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check job results
+        run: |
+          failed=""
+
+          declare -A results
+          results["linux-unit-tests"]="${{ needs.linux-unit-tests.result }}"
+          results["linux-unit2-tests"]="${{ needs.linux-unit2-tests.result }}"
+          results["determine-tests-based-off-commit"]="${{needs.determine-tests-based-off-commit.result}}"
+
+          for job in "${!results[@]}"; do
+            result="${results[$job]}"
+            echo "$job: $result"
+            if [[ "$result" == "failure" || "$result" == "cancelled" ]]; then
+              failed+="$job ($result)\n"
+            fi
+          done
+
+          if [[ -n "$failed" ]]; then
+            echo -e "::error::Some jobs failed or were cancelled:\n$failed"
+            exit 1
+          fi
+
+          echo "All required jobs passed or were skipped."
