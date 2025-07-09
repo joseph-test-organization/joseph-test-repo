@@ -36,8 +36,8 @@ jobs:
         with:
           node-version: 24
           cache: 'yarn'
-      - name: Install and build packages
-        run: yarn && yarn setup
+      - name: Install packages
+        run: yarn install
       - name: Determine tests to run
         id: determine
         # The output of determine-tests would be a json object that looks like this:
@@ -102,7 +102,8 @@ jobs:
     needs:
       [
         linux-unit-tests,
-        linux-unit2-tests
+        linux-unit2-tests,
+        determine-tests-based-off-commit
       ]
     if: always()
     runs-on: ubuntu-latest
@@ -114,6 +115,7 @@ jobs:
           declare -A results
           results["linux-unit-tests"]="${{ needs.linux-unit-tests.result }}"
           results["linux-unit2-tests"]="${{ needs.linux-unit2-tests.result }}"
+          results["determine-tests-based-off-commit"]="${{needs.determine-tests-based-off-commit.result}}"
 
           for job in "${!results[@]}"; do
             result="${results[$job]}"
