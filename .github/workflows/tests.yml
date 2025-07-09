@@ -56,7 +56,7 @@ jobs:
           UNIT2=$(echo "$JSON" | jq -r '.unit2')
 
           echo "unit=$UNIT" >> $GITHUB_OUTPUT
-          echo "unit2=$UNIT" >> $GITHUB_OUTPUT
+          echo "unit2=$UNIT2" >> $GITHUB_OUTPUT
 
   linux-unit-tests:
     if: needs.determine-tests-based-off-commit.outputs.unit == 'true'
