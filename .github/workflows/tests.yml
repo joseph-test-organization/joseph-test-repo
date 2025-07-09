@@ -3,6 +3,8 @@ name: Teraslice CI Tests
 on:
   pull_request:
     branches: [ main ]
+  push:
+    branches: [ master ]
 
 jobs:
   verify-build:
