@@ -2,6 +2,9 @@ packages:
   - website
   - packages/*
 
-# onlyBuiltDependencies:
+onlyBuiltDependencies:
+  - "core-js-pure"
+  - "core-js"
+  - "unrs-resolver"
 
 # publicHoistPattern:
