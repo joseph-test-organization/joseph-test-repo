@@ -24,7 +24,7 @@ importers:
   packages/joseph-test-mono-2:
     dependencies:
       joseph-test-mono-1:
-        specifier: workspace:*
+        specifier: workspace:~
         version: link:../joseph-test-mono-1
 
   website:
