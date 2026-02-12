@@ -1,7 +1,7 @@
 {
   "name": "joseph-test-repo",
   "homepage": "https://joseph-test-organization.github.io/joseph-test-repo/",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A test repo for Joseph to do stuff ",
   "type": "module",
   "main": "test.js",
