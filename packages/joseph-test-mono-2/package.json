@@ -1,6 +1,6 @@
 {
   "name": "joseph-test-mono-2",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,6 @@
   "license": "ISC",
   "packageManager": "pnpm@10.25.0",
   "dependencies": {
-    "joseph-test-mono-1": "workspace:*"
+    "joseph-test-mono-1": "workspace:~"
   }
 }
