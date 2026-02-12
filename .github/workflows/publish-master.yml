@@ -1,11 +1,11 @@
-name: Publish Release NPM Packages With Yarn
+name: Publish Release NPM Packages With Pnpm
 
 on:
   release:
     types: [published]
 
 jobs:
-  test-npm-publish-with-yarn:
+  test-pnpm-publish:
     runs-on: ubuntu-latest
     env:
       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -26,17 +26,17 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install and build packages
-        run: yarn install
+        run: pnpm install
 
-      - name: Verify npm authentication within yarn
+      - name: Verify pnpm authentication
         env:
-          CI_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: yarn npm whoami
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm whoami
 
       - name: Publish to npm
         env:
-          CI_NPM_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: yarn npm publish
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm publish -r 
 
   build_and_release_docker:
     runs-on: ubuntu-latest

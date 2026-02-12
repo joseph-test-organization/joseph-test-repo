@@ -1,0 +1,10 @@
+packages:
+  - website
+  - packages/*
+
+onlyBuiltDependencies:
+  - "core-js-pure"
+  - "core-js"
+  - "unrs-resolver"
+
+# publicHoistPattern:

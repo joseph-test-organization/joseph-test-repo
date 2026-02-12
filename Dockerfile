@@ -4,15 +4,15 @@ FROM node:22.9.0
 WORKDIR /usr/src/app
 
 
-COPY package.json yarn.lock .yarnrc.yml ./
+COPY package.json pnpm-lock.yaml pnpm-workspaces ./
 COPY test.js ./
-COPY .yarn ./.yarn
 
-RUN ls -a ./.yarn
 RUN pwd
 
+RUN corepack enable
+
 # Install dependencies
-RUN yarn install
+RUN pnpm install
 
 RUN ls ./node_modules
 
@@ -26,7 +26,7 @@ LABEL org.opencontainers.image.documentation="https://github.com/joseph-test-org
   io.terascope.image.node_version="$NODE_VERSION"
 
 # Command to run the application
-CMD ["yarn", "start"]
+CMD ["pnpm", "start"]
 
 # Use for debugging
 # ENTRYPOINT ["sleep", "infinity"]
