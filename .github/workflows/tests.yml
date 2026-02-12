@@ -45,30 +45,30 @@ jobs:
           cache: 'pnpm'
       - name: Install packages
         run: pnpm install
-      - name: Determine tests to run
-        id: determine
-        # The output of determine-tests would be a json object that looks like this:
-          # {
-          #   "unit": true,
-          #   "e2e": true,
-          #   "website": false
-          # }
-        run: |
-          echo "Running determine-tests..."
+      # - name: Determine tests to run
+      #   id: determine
+      #   # The output of determine-tests would be a json object that looks like this:
+      #     # {
+      #     #   "unit": true,
+      #     #   "e2e": true,
+      #     #   "website": false
+      #     # }
+      #   run: |
+      #     echo "Running determine-tests..."
 
-          JSON=$(pnpm -s determine-tests)
-          echo "$JSON"
+      #     JSON=$(pnpm -s determine-tests)
+      #     echo "$JSON"
 
-          UNIT=$(echo "$JSON" | jq -r '.unit')
-          UNIT2=$(echo "$JSON" | jq -r '.unit2')
+      #     UNIT=$(echo "$JSON" | jq -r '.unit')
+      #     UNIT2=$(echo "$JSON" | jq -r '.unit2')
 
-          echo "unit=$UNIT" >> $GITHUB_OUTPUT
-          echo "unit2=$UNIT2" >> $GITHUB_OUTPUT
+      #     echo "unit=$UNIT" >> $GITHUB_OUTPUT
+      #     echo "unit2=$UNIT2" >> $GITHUB_OUTPUT
 
   linux-unit-tests:
-    if: needs.determine-tests-based-off-commit.outputs.unit == 'true'
+    # if: needs.determine-tests-based-off-commit.outputs.unit == 'true'
     runs-on: ubuntu-latest
-    needs: determine-tests-based-off-commit
+    # needs: determine-tests-based-off-commit
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -88,9 +88,9 @@ jobs:
         run: pnpm test:unit
 
   linux-unit2-tests:
-    if: needs.determine-tests-based-off-commit.outputs.unit2 == 'true'
+    # if: needs.determine-tests-based-off-commit.outputs.unit2 == 'true'
     runs-on: ubuntu-latest
-    needs: determine-tests-based-off-commit
+    # needs: determine-tests-based-off-commit
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -114,7 +114,7 @@ jobs:
       [
         linux-unit-tests,
         linux-unit2-tests,
-        determine-tests-based-off-commit
+        # determine-tests-based-off-commit
       ]
     if: always()
     runs-on: ubuntu-latest
@@ -126,7 +126,6 @@ jobs:
           declare -A results
           results["linux-unit-tests"]="${{ needs.linux-unit-tests.result }}"
           results["linux-unit2-tests"]="${{ needs.linux-unit2-tests.result }}"
-          results["determine-tests-based-off-commit"]="${{needs.determine-tests-based-off-commit.result}}"
 
           for job in "${!results[@]}"; do
             result="${results[$job]}"
@@ -142,3 +141,6 @@ jobs:
           fi
 
           echo "All required jobs passed or were skipped."
+
+# results["determine-tests-based-off-commit"]="${{needs.determine-tests-based-off-commit.result}}"
+# Paste above line bacj into line 128 when we want it back
