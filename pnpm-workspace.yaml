@@ -1,0 +1,7 @@
+packages:
+  - website
+  - packages/*
+
+# onlyBuiltDependencies:
+
+# publicHoistPattern:

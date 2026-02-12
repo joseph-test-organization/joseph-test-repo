@@ -5,9 +5,6 @@
   "description": "A test repo for Joseph to do stuff ",
   "type": "module",
   "main": "test.js",
-  "workspaces": [
-    "website"
-  ],
   "scripts": {
     "start": "node test.js",
     "test": "jest",
@@ -18,7 +15,7 @@
   "author": "sotojn <jsoto@terascope.com>",
   "license": "ISC",
   "repository": "git@github.com:joseph-test-organization/joseph-test-repo.git",
-  "packageManager": "yarn@4.6.0",
+  "packageManager": "pnpm@10.25.0",
   "dependencies": {
     "body-parser": "^1.20.3",
     "express": "^4.21.2"
