@@ -12,14 +12,16 @@ jobs:
     steps:
     - name: Check out code
       uses: actions/checkout@v4
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
     - name: Setup Node
       uses: actions/setup-node@v4
       with:
         node-version: 22
-        cache: 'yarn'
+        cache: 'pnpm'
 
     - name: Install and build packages
-      run: YARN_ENABLE_HARDENED_MODE=1 yarn install
+      run: pnpm install
 
   determine-tests-based-off-commit:
     runs-on: ubuntu-latest
@@ -30,16 +32,19 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+
         with:
           fetch-depth: 0
           ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
       - name: Setup Node 24
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: 'yarn'
+          cache: 'pnpm'
       - name: Install packages
-        run: yarn install
+        run: pnpm install
       - name: Determine tests to run
         id: determine
         # The output of determine-tests would be a json object that looks like this:
@@ -51,7 +56,7 @@ jobs:
         run: |
           echo "Running determine-tests..."
 
-          JSON=$(yarn determine-tests)
+          JSON=$(pnpm determine-tests)
           echo "$JSON"
 
           UNIT=$(echo "$JSON" | jq -r '.unit')
@@ -67,18 +72,20 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
 
       - name: Setup Node 24
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: 'yarn'
+          cache: 'pnpm'
 
       - name: Install packages
-        run: yarn install
+        run: pnpm install
 
       - name: Test
-        run: yarn test:unit
+        run: pnpm test:unit
 
   linux-unit2-tests:
     if: needs.determine-tests-based-off-commit.outputs.unit2 == 'true'
@@ -87,18 +94,20 @@ jobs:
     steps:
       - name: Check out code
         uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
 
       - name: Setup Node 24
         uses: actions/setup-node@v4
         with:
           node-version: 24
-          cache: 'yarn'
+          cache: 'pnpm'
 
       - name: Install packages
-        run: yarn install
+        run: pnpm install
 
       - name: Test
-        run: yarn test:unit2
+        run: pnpm test:unit2
 
   all-tests-passed:
     needs:
