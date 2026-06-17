@@ -1,10 +1,10 @@
-FROM node:22.9.0
+FROM node:22
 
 # Set the working directory in the container
 WORKDIR /usr/src/app
 
 
-COPY package.json pnpm-lock.yaml pnpm-workspaces ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 COPY test.js ./
 
 RUN pwd
