@@ -67,7 +67,9 @@ jobs:
         id: tag
         run: |
           VERSION="${{ github.event.release.tag_name }}"
-          echo "image_tag=${{ env.IMAGE_NAME }}:${VERSION#v}" >> $GITHUB_OUTPUT
+          IMAGE_TAG="${{ env.IMAGE_NAME }}:${VERSION#v}"
+          echo "image_tag=${IMAGE_TAG}" >> $GITHUB_OUTPUT
+          echo "[amd64] Image tag will be: ${IMAGE_TAG}"
 
       - name: Build and push by digest (linux/amd64)
         id: build
@@ -77,7 +79,7 @@ jobs:
           platforms: linux/amd64
           build-args: |
             GITHUB_SHA=${{ github.sha }}
-          outputs: type=image,name=${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=true
+          outputs: type=image,name=${{ env.IMAGE_NAME }},push-by-digest=true,push=true
           provenance: false
 
       - name: Export digest and tag
@@ -85,6 +87,8 @@ jobs:
           mkdir -p /tmp/docker-meta
           echo "${{ steps.build.outputs.digest }}" > /tmp/docker-meta/digest.txt
           echo "${{ steps.tag.outputs.image_tag }}" > /tmp/docker-meta/tag.txt
+          echo "[amd64] Digest: ${{ steps.build.outputs.digest }}"
+          echo "[amd64] Tag:    ${{ steps.tag.outputs.image_tag }}"
 
       - name: Upload docker meta artifact
         uses: actions/upload-artifact@v4
@@ -119,13 +123,14 @@ jobs:
           platforms: linux/arm64
           build-args: |
             GITHUB_SHA=${{ github.sha }}
-          outputs: type=image,name=${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=true
+          outputs: type=image,name=${{ env.IMAGE_NAME }},push-by-digest=true,push=true
           provenance: false
 
       - name: Export digest
         run: |
           mkdir -p /tmp/docker-meta
           echo "${{ steps.build.outputs.digest }}" > /tmp/docker-meta/digest.txt
+          echo "[arm64] Digest: ${{ steps.build.outputs.digest }}"
 
       - name: Upload docker meta artifact
         uses: actions/upload-artifact@v4
@@ -167,15 +172,20 @@ jobs:
           TAG=$(cat /tmp/amd64-meta/tag.txt)
           AMD64_DIGEST=$(cat /tmp/amd64-meta/digest.txt)
           ARM64_DIGEST=$(cat /tmp/arm64-meta/digest.txt)
-          echo "Creating manifest for ${TAG}"
+          echo "[manifest] Tag:         ${TAG}"
+          echo "[manifest] amd64 digest: ${AMD64_DIGEST}"
+          echo "[manifest] arm64 digest: ${ARM64_DIGEST}"
+          echo "[manifest] Creating manifest..."
           docker buildx imagetools create \
             -t "${TAG}" \
             "${{ env.IMAGE_NAME }}@${AMD64_DIGEST}" \
             "${{ env.IMAGE_NAME }}@${ARM64_DIGEST}"
+          echo "[manifest] Done"
 
       - name: Inspect manifest
         run: |
           TAG=$(cat /tmp/amd64-meta/tag.txt)
+          echo "[manifest] Inspecting ${TAG}"
           docker buildx imagetools inspect "${TAG}"
 
   append-docker-tag-to-release:
@@ -194,6 +204,7 @@ jobs:
         id: build-body
         run: |
           TAG=$(cat /tmp/amd64-meta/tag.txt)
+          echo "[release] Appending tag to release: ${TAG}"
           {
             echo "body<<EOF"
             echo "### Docker Image"
